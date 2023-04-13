@@ -16,6 +16,7 @@ import { $i, iAmModerator } from '@/account.js';
 import { IRouter } from '@/nirax.js';
 import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
 import { mainRouter } from '@/router/main.js';
+import { editNickname } from '@/scripts/edit-nickname.js';
 
 export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -191,7 +192,13 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${user.host}`;
 			os.post({ specified: user, initialText: `${canonical} ` });
 		},
-	}, { type: 'divider' }, {
+	}, undefined, { type: 'divider' }, ...(defaultStore.state.nicknameEnabled ? [{
+		icon: 'ti ti-edit',
+		text: 'ニックネームを編集',
+		action: () => {
+			editNickname(user);
+		},
+	}] : []), {
 		icon: 'ph-pencil-simple ph-bold ph-lg',
 		text: i18n.ts.editMemo,
 		action: () => {
