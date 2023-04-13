@@ -19,7 +19,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div ref="bannerEl" class="banner" :style="style"></div>
 						<div class="fade"></div>
 						<div class="title">
-							<MkUserName class="name" :user="user" :nowrap="true"/>
+							<div class="name">
+								<MkUserName :user="user" :nowrap="true"/>
+								<button v-if="defaultStore.reactiveState.nicknameEnabled.value" v-tooltip="'ニックネームを編集…'" class="_button nickname-button" @click="editNickname(props.user)">
+									<i class="ti ti-edit"/>
+								</button>
+							</div>
 							<div class="bottom">
 								<span class="username"><MkAcct :user="user" :detail="true"/></span>
 								<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--badge);"><i class="ph-shield ph-bold ph-lg"></i></span>
@@ -193,6 +198,7 @@ import { defaultStore } from '@/store.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
 import { useRouter } from '@/router/supplier.js';
+import { editNickname } from '@/scripts/edit-nickname.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -475,12 +481,25 @@ onUnmounted(() => {
 						color: #fff;
 
 						> .name {
-							display: block;
+							display: flex;
+							gap: 8px;
 							margin: 0;
 							line-height: 32px;
 							font-weight: bold;
 							font-size: 1.8em;
 							text-shadow: 0 0 8px #000;
+
+							> .nickname-button {
+								-webkit-backdrop-filter: var(--blur, blur(8px));
+								backdrop-filter: var(--blur, blur(8px));
+								background: rgba(0, 0, 0, 0.2);
+								color: #ccc;
+								font-size: 0.7em;
+								line-height: 1;
+								width: 1.8em;
+								height: 1.8em;
+								border-radius: 100%;
+							}
 						}
 
 						> .bottom {
@@ -654,6 +673,21 @@ onUnmounted(() => {
 						> b {
 							display: block;
 							line-height: 16px;
+						}
+
+						> span {
+							font-size: 70%;
+						}
+					}
+
+					>div {
+						flex: 1;
+						text-align: center;
+
+						> i {
+							display: block;
+							line-height: 16px;
+							margin: 0 auto;
 						}
 
 						> span {
