@@ -12,8 +12,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-panel class="about">
 					<div ref="containerEl" class="container" :class="{ playing: easterEggEngine != null }">
 						<img src="/client-assets/about-icon.png" alt="" class="icon" draggable="false" @load="iconLoaded" @click="gravity"/>
-						<div class="misskey">Sharkey</div>
+						<div class="misskey">Rosekey</div>
 						<div class="version">v{{ version }}</div>
+						<div class="version">v{{ miversion }} (Based on Sharkey)</div>
 						<span v-for="emoji in easterEggEmojis" :key="emoji.id" class="emoji" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }">
 							<MkCustomEmoji v-if="emoji.emoji[0] === ':'" class="emoji" :name="emoji.emoji" :normal="true" :noStyle="true"/>
 							<MkEmoji v-else class="emoji" :emoji="emoji.emoji" :normal="true" :noStyle="true"/>
@@ -22,67 +23,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<button v-if="thereIsTreasure" class="_button treasure" @click="getTreasure"><img src="/fluent-emoji/1f3c6.png" class="treasureImg"></button>
 				</div>
 				<div style="text-align: center;">
-					{{ i18n.ts._aboutMisskey.about }}<br><a href="https://joinsharkey.org/" target="_blank" class="_link">{{ i18n.ts.learnMore }}</a>
+					{{ i18n.ts._aboutMisskey.about }}<br><a href="https://vocaloid.social" target="_blank" class="_link">{{ i18n.ts.learnMore }}</a>
 				</div>
 				<div v-if="$i != null" style="text-align: center;">
-					<MkButton primary rounded inline @click="iLoveMisskey">I <Mfm text="$[jelly ❤]"/> #Sharkey</MkButton>
+					<MkButton primary rounded inline @click="iLoveMisskey">I <Mfm text="$[jelly ❤]"/> #Rosekey</MkButton>
 				</div>
 				<FormSection>
 					<div class="_gaps_s">
-						<FormLink to="https://github.com/misskey-dev/misskey" external>
-							<template #icon><i class="ph-code ph-bold ph-lg"></i></template>
-							{{ i18n.ts._aboutMisskey.source }} ({{ i18n.ts._aboutMisskey.original }})
+						<FormLink to="https://github.com/freelynetwork/rosekey" external>
+							<template #icon><i class="ti ti-code"></i></template>
+							{{ i18n.ts._aboutMisskey.source }}
 							<template #suffix>GitHub</template>
 						</FormLink>
-						<FormLink to="https://www.patreon.com/syuilo" external>
-							<template #icon><i class="ph-piggy-bank ph-bold ph-lg"></i></template>
-							{{ i18n.ts._aboutMisskey.donate }}
-							<template #suffix>Patreon</template>
-						</FormLink>
-					</div>
-				</FormSection>
-				<FormSection v-if="instance.repositoryUrl !== 'https://github.com/misskey-dev/misskey'">
-					<div class="_gaps_s">
-						<MkInfo>
-							{{ i18n.tsx._aboutMisskey.thisIsModifiedVersion({ name: instance.name }) }}
-						</MkInfo>
-						<FormLink v-if="instance.repositoryUrl" :to="instance.repositoryUrl" external>
-							<template #icon><i class="ph-code ph-bold ph-lg"></i></template>
+						<FormLink to="https://activitypub.software/TransFem-org/Sharkey" external>
+							<template #icon><i class="ti ti-code"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
-							<template #suffix>GitLab</template>
+							<template #suffix>Sharkey GitLab</template>
 						</FormLink>
-						<FormLink to="https://ko-fi.com/transfem" external>
-							<template #icon><i class="ph-piggy-bank ph-bold ph-lg"></i></template>
-							{{ i18n.ts._aboutMisskey.donate }}
-							<template #suffix>Ko-Fi</template>
-						</FormLink>
-						<FormLink v-if="instance.providesTarball" :to="`/tarball/sharkey-${version}.tar.gz`" external>
-							<template #icon><i class="ph-download ph-bold ph-lg"></i></template>
+						<FormLink to="https://github.com/misskey-dev/misskey" external>
+							<template #icon><i class="ti ti-code"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
-							<template #suffix>Tarball</template>
+							<template #suffix>Misskey GitHub</template>
 						</FormLink>
-						<MkInfo v-if="!instance.repositoryUrl && !instance.providesTarball" warn>
-							{{ i18n.ts.sourceCodeIsNotYetProvided }}
-						</MkInfo>
 					</div>
 				</FormSection>
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.projectMembers }}</template>
-					<div :class="$style.contributors" style="margin-bottom: 8px;">
-						<a href="https://activitypub.software/Marie" target="_blank" :class="$style.contributor">
-							<img src="https://activitypub.software/uploads/-/system/user/avatar/2/avatar.png?width=128" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@Marie</span>
+					<div :class="$style.contributors">
+						<a href="https://github.com/16439s" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/146170742?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@16439s</span>
 						</a>
-						<a href="https://activitypub.software/Amelia" target="_blank" :class="$style.contributor">
-							<img src="https://activitypub.software/uploads/-/system/user/avatar/1/avatar.png?width=128" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@Amelia</span>
-						</a>
-					</div>
-					<template #caption><MkLink url="https://activitypub.software/TransFem-org/Sharkey/-/graphs/develop">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
-				</FormSection>
-				<FormSection>
-					<template #label>Misskey Contributors</template>
-					<div :class="$style.contributors" style="margin-bottom: 8px;">
 						<a href="https://github.com/syuilo" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/4439005?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@syuilo</span>
@@ -113,21 +84,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</a>
 					</div>
 				</FormSection>
-				<FormSection>
-					<template #label>Our lovely Sponsors</template>
-					<div :class="$style.contributors">
-						<span
-							v-for="sponsor in sponsors[0]"
-							:key="sponsor"
-							style="margin-bottom: 0.5rem;"
-						>
-							<a :href="sponsor.profile" target="_blank" :class="$style.contributor">
-								<img :src="sponsor.avatar" :class="$style.contributorAvatar">
-								<span :class="$style.contributorUsername">{{ sponsor.details.name }}</span>
-							</a>
-						</span>
-					</div>
-				</FormSection>
 			</div>
 		</MkSpacer>
 	</div>
@@ -136,7 +92,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { nextTick, onBeforeUnmount, ref, shallowRef, computed } from 'vue';
-import { version } from '@/config.js';
+import { version, miversion } from '@/config.js';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -187,7 +143,7 @@ function gravity() {
 
 function iLoveMisskey() {
 	os.post({
-		initialText: 'I $[jelly ❤] #Misskey',
+		initialText: 'I $[jelly ❤] #rosekey',
 		instant: true,
 	});
 }
