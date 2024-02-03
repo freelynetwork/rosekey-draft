@@ -89,6 +89,8 @@ type Source = {
 
 	customMOTD?: string[];
 
+	langPref?: string[];
+
 	signToActivityPubGet?: boolean;
 	checkActivityPubGetSignature?: boolean;
 
@@ -151,6 +153,7 @@ export type Config = {
 	customMOTD: string[] | undefined;
 	signToActivityPubGet: boolean;
 	checkActivityPubGetSignature: boolean | undefined;
+	langPref: string[];
 
 	version: string;
 	host: string;
@@ -265,6 +268,7 @@ export function loadConfig(): Config {
 		inboxJobMaxAttempts: config.inboxJobMaxAttempts,
 		proxyRemoteFiles: config.proxyRemoteFiles,
 		customMOTD: config.customMOTD,
+		langPref: config.langPref ?? ['en', 'ja'],
 		signToActivityPubGet: config.signToActivityPubGet ?? true,
 		checkActivityPubGetSignature: config.checkActivityPubGetSignature,
 		mediaProxy: externalMediaProxy ?? internalMediaProxy,
