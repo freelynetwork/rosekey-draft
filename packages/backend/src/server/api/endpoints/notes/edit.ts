@@ -11,6 +11,7 @@ import { Endpoint } from '@/server/api/endpoint-base.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { NoteEditService } from '@/core/NoteEditService.js';
 import { DI } from '@/di-symbols.js';
+import { langmap } from '@/misc/langmap.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
@@ -157,6 +158,7 @@ export const paramDef = {
 				format: 'misskey:id',
 			},
 		},
+		lang: { type: 'string', enum: Object.keys(langmap), nullable: true, maxLength: 10 },
 		cw: { type: 'string', nullable: true, minLength: 1, maxLength: 500 },
 		localOnly: { type: 'boolean', default: false },
 		reactionAcceptance: { type: 'string', nullable: true, enum: [null, 'likeOnly', 'likeOnlyForRemote', 'nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote'], default: null },
@@ -294,7 +296,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (ps.renoteId === ps.editId) {
 				throw new ApiError(meta.errors.cannotQuoteCurrentPost);
 			}
-			
+
 			if (ps.renoteId != null) {
 				// Fetch renote to note
 				renote = await this.notesRepository.findOneBy({ id: ps.renoteId });
@@ -380,6 +382,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				}
 			}
 
+			if (ps.lang) {
+				if (!Object.keys(langmap).includes(ps.lang.toLowerCase())) throw new Error('invalid param');
+				ps.lang = ps.lang.toLowerCase();
+			} else {
+				ps.lang = null;
+			}
+
 			// 投稿を作成
 			const note = await this.noteEditService.edit(me, ps.editId!, {
 				files: files,
@@ -389,6 +398,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt) : null,
 				} : undefined,
 				text: ps.text ?? undefined,
+				lang: ps.lang,
 				reply,
 				renote,
 				cw: ps.cw,

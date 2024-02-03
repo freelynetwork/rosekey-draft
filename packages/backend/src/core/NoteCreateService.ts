@@ -61,6 +61,7 @@ import { CacheService } from '@/core/CacheService.js';
 import { isReply } from '@/misc/is-reply.js';
 import { trackPromise } from '@/misc/promise-tracker.js';
 import { isUserRelated } from '@/misc/is-user-related.js';
+import { langmap } from '@/misc/langmap.js';
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
 
@@ -131,6 +132,7 @@ type Option = {
 	createdAt?: Date | null;
 	name?: string | null;
 	text?: string | null;
+	lang?: string | null;
 	reply?: MiNote | null;
 	renote?: MiNote | null;
 	files?: MiDriveFile[] | null;
@@ -335,6 +337,13 @@ export class NoteCreateService implements OnApplicationShutdown {
 			}
 		} else {
 			data.text = null;
+		}
+
+		if (data.lang) {
+			if (!Object.keys(langmap).includes(data.lang.toLowerCase())) throw new Error('invalid param');
+			data.lang = data.lang.toLowerCase();
+		} else {
+			data.lang = null;
 		}
 
 		let tags = data.apHashtags;
@@ -581,6 +590,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 				: null,
 			name: data.name,
 			text: data.text,
+			lang: data.lang,
 			hasPoll: data.poll != null,
 			cw: data.cw ?? null,
 			tags: tags.map(tag => normalizeForSearch(tag)),
@@ -1006,7 +1016,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 				removeOnComplete: true,
 			});
 		}
-		
+
 		// Pack the note
 		const noteObj = await this.noteEntityService.pack(note, null, { skipHide: true, withReactionAndUserPairCache: true });
 
