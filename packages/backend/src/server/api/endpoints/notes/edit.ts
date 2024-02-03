@@ -382,13 +382,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				}
 			}
 
-			if (ps.lang) {
-				if (!Object.keys(langmap).includes(ps.lang.toLowerCase())) throw new Error('invalid param');
-				ps.lang = ps.lang.toLowerCase();
-			} else {
-				ps.lang = null;
-			}
-
 			// 投稿を作成
 			const note = await this.noteEditService.edit(me, ps.editId!, {
 				files: files,

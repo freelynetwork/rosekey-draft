@@ -255,7 +255,7 @@ export class ApNoteService {
 
 		let lang: string | null = null;
 		if (note.contentMap != null) {
-			const key = Object.keys(note.contentMap)[0].toLowerCase();
+			const key = Object.keys(note.contentMap)[0];
 			lang = Object.keys(langmap).includes(key) ? key : null;
 		}
 
@@ -473,7 +473,7 @@ export class ApNoteService {
 
 		let lang: string | null = null;
 		if (note.contentMap != null) {
-			const key = Object.keys(note.contentMap)[0].toLowerCase();
+			const key = Object.keys(note.contentMap)[0];
 			lang = Object.keys(langmap).includes(key) ? key : null;
 		}
 
