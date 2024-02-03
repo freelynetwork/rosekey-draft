@@ -5037,6 +5037,10 @@ export interface Locale extends ILocale {
      * スワイプしてタブを切り替える
      */
     "enableHorizontalSwipe": string;
+    /**
+     * 言語なし
+     */
+    "noLanguage": string;
     "_bubbleGame": {
         /**
          * 遊び方
