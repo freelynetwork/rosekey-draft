@@ -163,6 +163,11 @@ const menuDef = computed(() => [{
 		to: '/settings/migration',
 		active: currentPage.value?.route.name === 'migration',
 	}, {
+		icon: 'ti ti-bulb-filled',
+		text: 'Rosekey',
+		to: '/settings/rosekey',
+		active: currentPage.value?.route.name === 'rosekey',
+	}, {
 		icon: 'ph-dots-three ph-bold ph-lg',
 		text: i18n.ts.other,
 		to: '/settings/other',
