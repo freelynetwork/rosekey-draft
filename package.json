@@ -1,6 +1,6 @@
 {
 	"name": "rosekey",
-	"version": "1.0.dev1",
+	"version": "1.0.dev.1",
 	"basedSharkeyVersion": "2024.2.0-beta.12",
 	"codename": "Re:Package",
 	"repository": {
