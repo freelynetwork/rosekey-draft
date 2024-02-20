@@ -378,7 +378,7 @@ watch(fontSize, () => {
 });
 
 watch(cornerRadius, () => {
-	if (cornerRadius.value == "misskey") {
+	if (cornerRadius.value == null) {
 		miLocalStorage.removeItem('cornerRadius');
 	} else {
 		miLocalStorage.setItem('cornerRadius', cornerRadius.value);
