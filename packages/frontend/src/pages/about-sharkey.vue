@@ -84,6 +84,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</a>
 					</div>
 				</FormSection>
+				<FormSection>
+					<template #label>Special thanks</template>
+					<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));grid-gap:24px;align-items:center;">
+						<FormLink to="https://github.com/kokonect-link/cherrypick" external>
+							<template #icon><i class="ti ti-code"></i></template>
+							{{ i18n.ts._aboutMisskey.source }}
+							<template #suffix>CherryPick GitHub</template>
+						</FormLink>
+					</div>
+				</FormSection>
 			</div>
 		</MkSpacer>
 	</div>
